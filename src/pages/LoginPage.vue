@@ -1,11 +1,12 @@
 <template>
-  <div class="q-pa-md text-center q-mx-auto" style="max-width: 40rem">
+  <div class="q-pa-md text-center q-mx-auto form-container" style="max-width: 40rem">
     <h5 class="text-center">Iniciar Sesion</h5>
     <q-card class="login-card">
       <q-card-section>
         <q-form @submit="onSubmit" @reset="onReset" class="q-px-md">
           <div class="q-py-md">
             <q-input
+              dense
               v-model="document"
               label="Documento"
               hint="Ingrese su documento de identidad"
@@ -18,6 +19,7 @@
             />
 
             <q-input
+              dense
               type="password"
               v-model="password"
               label="Contraseña"
@@ -60,13 +62,27 @@
 
 <script setup>
 import { ref } from 'vue';
+import { api } from "boot/axios";
+import { useRouter } from "vue-router";
 
   let document = ref(null);
   let password = ref(null);
 
-  function onSubmit() {
-    console.log('Iniciar sesion en el backend');
+  const router = useRouter()
+
+  async function onSubmit() {
+  let response = await api.post("/login", {
+    document: document.value,
+    password: password.value,
+  });
+
+  if (response.data){
+    router.push("/home");
   }
+  else {
+    alert('Credenciales incorrectas');
+  }
+}
 
   function onReset() {
     document.value = null;
@@ -74,3 +90,12 @@ import { ref } from 'vue';
   }
 
 </script>
+
+<style lang="scss">
+.form-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+</style>

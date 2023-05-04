@@ -1,17 +1,50 @@
 <template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
-  </q-page>
+  <div
+    class="q-pa-md text-center q-mx-auto form-container"
+    style="max-width: 40rem"
+  >
+    Index works!
+  </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup>
+import { ref } from "vue";
+import { api } from "boot/axios";
+import { useRouter } from "vue-router";
 
-export default defineComponent({
-  name: 'IndexPage'
-})
+let document = ref(null);
+let name = ref(null);
+let phone = ref(null);
+let password = ref(null);
+let confirmPassword = ref(null);
+
+const router = useRouter();
+
+async function onSubmit() {
+  let response = await api.post("/register", {
+    document: document.value,
+    name: name.value,
+    phone: phone.value,
+    password: password.value,
+  });
+
+  router.push("/home");
+}
+
+function onReset() {
+  document.value = null;
+  name.value = null;
+  phone.value = null;
+  confirmPassword.value = null;
+  password.value = null;
+}
 </script>
+
+<style lang="scss">
+.form-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+</style>
