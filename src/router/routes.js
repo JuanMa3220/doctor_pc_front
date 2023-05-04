@@ -12,7 +12,9 @@ const routes = [
     path: '/home',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') }
+      { path: '/dispositivos', component: () => import('pages/DevicesPage.vue') },
+      { path: '/facturas', component: () => import('pages/BouchersPage.vue') },
+      { path: '/admin', component: () => import('pages/AdminPage.vue') },
     ]
   },
 

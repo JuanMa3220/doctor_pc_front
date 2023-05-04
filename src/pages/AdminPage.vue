@@ -1,9 +1,9 @@
 <template>
   <div
-    class="q-pa-md text-center q-mx-auto form-container"
+    class="q-pa-md text-center q-mx-auto"
     style="max-width: 40rem"
   >
-    Index works!
+    Admnin works!
   </div>
 </template>
 
@@ -40,11 +40,3 @@ function onReset() {
 }
 </script>
 
-<style lang="scss">
-.form-container {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-</style>

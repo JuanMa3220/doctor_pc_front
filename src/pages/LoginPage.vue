@@ -77,7 +77,7 @@ import { useRouter } from "vue-router";
   });
 
   if (response.data){
-    router.push("/home");
+    router.push("/dispositivos");
   }
   else {
     alert('Credenciales incorrectas');

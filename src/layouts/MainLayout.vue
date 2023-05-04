@@ -10,8 +10,8 @@
       </q-toolbar>
 
       <q-tabs align="left">
-        <q-route-tab to="/devices" label="Dispositivos" />
-        <q-route-tab to="/bouchers" label="Facturas" />
+        <q-route-tab to="/dispositivos" label="Dispositivos" />
+        <q-route-tab to="/facturas" label="Facturas" />
         <q-route-tab to="/admin" label="Administración" />
       </q-tabs>
     </q-header>
