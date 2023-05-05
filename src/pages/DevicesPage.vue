@@ -10,11 +10,53 @@
     </div>
     <div class="table-container q-py-md">
       <q-table
+        :loading="loadingTable"
+        style="height: 60vh"
         title="Dispositivos"
         :rows="rows"
         :columns="columns"
         row-key="id"
-      />
+      >
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td key="id" :props="props">
+              {{ props.row.id }}
+            </q-td>
+            <q-td key="article" :props="props">
+              {{ props.row.article }}
+            </q-td>
+            <q-td key="brand" :props="props">
+              {{ props.row.brand }}
+            </q-td>
+            <q-td key="serial" :props="props">
+              {{ props.row.serial }}
+            </q-td>
+            <q-td key="diagnostic" :props="props">
+              {{ props.row.diagnostic }}
+            </q-td>
+            <q-td key="state" :props="props">
+              {{ props.row.state }}
+            </q-td>
+            <q-td>
+              <q-btn
+                class="q-mx-sm"
+                icon="edit"
+                color="warning"
+                rounded
+                dense
+                @click="editDevice(props.row.id)"
+              ></q-btn>
+              <q-btn
+                class="q-mx-sm"
+                icon="remove"
+                color="negative"
+                rounded
+                dense
+              ></q-btn>
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
     </div>
   </div>
   <q-dialog v-model="openAddDevice" persistent>
@@ -32,6 +74,23 @@
       </q-card-section>
     </q-card>
   </q-dialog>
+
+  <q-dialog v-model="openEditDevice" persistent>
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Edit Dispositivo</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
+      <q-card-section>
+        <EditDeviceForm
+          style="width: 45rem; max-width: 95%"
+          :device-id="editDeviceId"
+          @refresh-table="refreshTable()"
+        />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup>
@@ -39,10 +98,14 @@ import { ref, onBeforeMount } from "vue";
 import { api } from "boot/axios";
 
 import AddDeviceForm from "src/components/AddDeviceForm.vue";
+import EditDeviceForm from "src/components/EditDeviceForm.vue";
 
 let rows = ref();
 let columns = ref();
 let openAddDevice = ref(false);
+let openEditDevice = ref(false);
+let loadingTable = ref(false);
+let editDeviceId = ref(null);
 
 columns.value = [
   {
@@ -85,10 +148,17 @@ function getState(state) {
 }
 
 async function refreshTable() {
-  console.log("Refresh");
+  loadingTable.value = true;
   let response = await api.get("/devices/all");
   rows.value = response.data;
   openAddDevice.value = false;
+  openEditDevice.value = false;
+  loadingTable.value = false;
+}
+
+function editDevice(deviceId) {
+  editDeviceId.value = deviceId;
+  openEditDevice.value = true;
 }
 
 onBeforeMount(() => {
