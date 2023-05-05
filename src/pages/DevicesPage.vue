@@ -52,6 +52,7 @@
                 color="negative"
                 rounded
                 dense
+                @click="deleteDevice(props.row.id)"
               ></q-btn>
             </q-td>
           </q-tr>
@@ -91,6 +92,23 @@
       </q-card-section>
     </q-card>
   </q-dialog>
+
+  <q-dialog v-model="openDeleteDevice" persistent>
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Eliminar Dispositivo</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
+      <q-card-section>
+        <DeleteDevice
+          style="width: 45rem; max-width: 95%"
+          :device-id="deleteDeviceId"
+          @refresh-table="refreshTable()"
+        />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup>
@@ -99,13 +117,16 @@ import { api } from "boot/axios";
 
 import AddDeviceForm from "src/components/AddDeviceForm.vue";
 import EditDeviceForm from "src/components/EditDeviceForm.vue";
+import DeleteDevice from "src/components/DeleteDevice.vue";
 
 let rows = ref();
 let columns = ref();
 let openAddDevice = ref(false);
 let openEditDevice = ref(false);
+let openDeleteDevice = ref(false);
 let loadingTable = ref(false);
 let editDeviceId = ref(null);
+let deleteDeviceId = ref(null);
 
 columns.value = [
   {
@@ -153,12 +174,18 @@ async function refreshTable() {
   rows.value = response.data;
   openAddDevice.value = false;
   openEditDevice.value = false;
+  openDeleteDevice.value = false;
   loadingTable.value = false;
 }
 
 function editDevice(deviceId) {
   editDeviceId.value = deviceId;
   openEditDevice.value = true;
+}
+
+function deleteDevice(deviceId) {
+  deleteDeviceId.value = deviceId;
+  openDeleteDevice.value = true;
 }
 
 onBeforeMount(() => {
