@@ -1,5 +1,8 @@
 <template>
-  <div class="q-pa-md text-center q-mx-auto form-container" style="max-width: 40rem">
+  <div
+    class="q-pa-md text-center q-mx-auto form-container"
+    style="max-width: 40rem"
+  >
     <h5 class="text-center">Iniciar Sesion</h5>
     <q-card class="login-card">
       <q-card-section>
@@ -54,41 +57,44 @@
       <q-separator />
 
       <q-card-actions vertical>
-        <q-btn no-caps flat label="Registrate aqui si no tienes una cuenta" to="/register"></q-btn>
+        <q-btn
+          no-caps
+          flat
+          label="Registrate aqui si no tienes una cuenta"
+          to="/register"
+        ></q-btn>
       </q-card-actions>
     </q-card>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 import { api } from "boot/axios";
 import { useRouter } from "vue-router";
 
-  let document = ref(null);
-  let password = ref(null);
+let document = ref(null);
+let password = ref(null);
 
-  const router = useRouter()
+const router = useRouter();
 
-  async function onSubmit() {
+async function onSubmit() {
   let response = await api.post("/login", {
     document: document.value,
     password: password.value,
   });
 
-  if (response.data){
+  if (response.data === true) {
     router.push("/dispositivos");
-  }
-  else {
-    alert('Credenciales incorrectas');
+  } else {
+    alert("Credenciales incorrectas");
   }
 }
 
-  function onReset() {
-    document.value = null;
-    password.value = null;
-  }
-
+function onReset() {
+  document.value = null;
+  password.value = null;
+}
 </script>
 
 <style lang="scss">
