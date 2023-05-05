@@ -1,100 +1,97 @@
 <template>
-  <div
-    class="q-pa-md text-center q-mx-auto"
-    style="max-width: 45rem;">
+  <div class="q-pa-md text-center q-mx-auto" style="max-width: 45rem">
     <div class="text-left">
-      <q-btn no-caps label="Agregar" color="primary"/>
+      <q-btn
+        no-caps
+        label="Agregar"
+        color="primary"
+        @click="openAddDevice = true"
+      />
     </div>
-    <div class="table-container">
+    <div class="table-container q-py-md">
       <q-table
         title="Dispositivos"
         :rows="rows"
         :columns="columns"
-        row-key="id" />
+        row-key="id"
+      />
     </div>
   </div>
+  <q-dialog v-model="openAddDevice" persistent>
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Agregar Dispositivo</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
+      <q-card-section>
+        <AddDeviceForm
+          style="width: 45rem; max-width: 95%"
+          @refresh-table="refreshTable()"
+        />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { api } from "boot/axios";
-import { useRouter } from "vue-router";
+
+import AddDeviceForm from "src/components/AddDeviceForm.vue";
 
 let rows = ref();
 let columns = ref();
+let openAddDevice = ref(false);
 
-const router = useRouter();
-
-columns.value = [{
-  name: 'article',
-  label: 'Artículo',
-  field: row => row.article
+columns.value = [
+  {
+    name: "article",
+    label: "Artículo",
+    field: (row) => row.article,
   },
   {
-  name: 'brand',
-  label: 'Marca',
-  field: row => row.brand
+    name: "brand",
+    label: "Marca",
+    field: (row) => row.brand,
   },
   {
-  name: 'serial',
-  label: 'Serial',
-  field: row => row.serial
+    name: "serial",
+    label: "Serial",
+    field: (row) => row.serial,
   },
   {
-  name: 'diagnostic',
-  label: 'Diagnostico',
-  field: row => row.diagnostic
+    name: "diagnostic",
+    label: "Diagnostico",
+    field: (row) => row.diagnostic,
   },
   {
-  name: 'state',
-  label: 'Estado',
-  field: row => row.state
+    name: "state",
+    label: "Estado",
+    field: (row) => row.state,
+    format: (state) => getState(state),
   },
 ];
 
-let device = {
-  id: Math.random(),
-  article: 'PC',
-  brand: 'Lenovo',
-  serial: 'SN123',
-  diagnostic: 'No tiene arreglo',
-  state: 2
+function getState(state) {
+  switch (state) {
+    case 0:
+      return "Recibido";
+    case 1:
+      return "Revision";
+    default:
+      return "Listo";
+  }
 }
 
-rows.value = [
-  device,
-  device,
-  device,
-  device,
-  device,
-  device,
-  device,
-  device,
-  device,
-  device,
-  device,
-  device,
-  device,
-  device,
-]
-
-async function onSubmit() {
-  let response = await api.post("/register", {
-    document: document.value,
-    name: name.value,
-    phone: phone.value,
-    password: password.value,
-  });
-
-  router.push("/home");
+async function refreshTable() {
+  console.log("Refresh");
+  let response = await api.get("/devices/all");
+  rows.value = response.data;
+  openAddDevice.value = false;
 }
 
-function onReset() {
-  document.value = null;
-  name.value = null;
-  phone.value = null;
-  confirmPassword.value = null;
-  password.value = null;
-}
-
+onBeforeMount(() => {
+  refreshTable();
+});
 </script>
