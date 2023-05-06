@@ -12,7 +12,7 @@
       <q-table
         :loading="loadingTable"
         style="height: 60vh"
-        title="Dispositivos"
+        title="Aparatos"
         :rows="rows"
         :columns="columns"
         row-key="id"
