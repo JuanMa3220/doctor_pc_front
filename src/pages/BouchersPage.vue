@@ -34,7 +34,7 @@
             <q-td key="state" :props="props">
               {{ props.row.state }}
             </q-td>
-            <q-td key="description" :props="props">
+            <q-td key="description" :props="props" class="max-width">
               {{ props.row.description }}
             </q-td>
             <q-td>
@@ -141,7 +141,7 @@ columns.value = [
   },
   {
     name: "total",
-    label: "Taltal Factura",
+    label: "Total Factura",
     field: (row) => row.total,
   },
   {
@@ -192,3 +192,11 @@ onBeforeMount(() => {
   refreshTable();
 });
 </script>
+
+<style>
+.max-width {
+  max-width: 7rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+</style>

@@ -48,6 +48,9 @@
 <script setup>
 import { ref } from "vue";
 import { api } from "boot/axios";
+import { useQuasar } from "quasar";
+
+const $q = useQuasar();
 
 let article = ref(null);
 let brand = ref(null);
@@ -64,6 +67,9 @@ async function onSubmit() {
     diagnostic: "",
     state: state.value,
     userId: 2,
+  });
+  $q.notify({
+    message: "Dispositivo creado",
   });
   emit("refreshTable");
 }

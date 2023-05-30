@@ -9,6 +9,9 @@
 
 <script setup>
 import { api } from "boot/axios";
+import { useQuasar } from "quasar";
+
+const $q = useQuasar();
 
 const props = defineProps({ boucherId: Number });
 
@@ -16,6 +19,9 @@ const emit = defineEmits(["refreshTable"]);
 
 async function onSubmit() {
   await api.post("/boucher/delete/" + props.boucherId);
+  $q.notify({
+    message: "Factura borrada",
+  });
   emit("refreshTable");
 }
 </script>

@@ -59,6 +59,9 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { api } from "boot/axios";
+import { useQuasar } from "quasar";
+
+const $q = useQuasar();
 
 const props = defineProps({ boucherId: Number });
 
@@ -92,6 +95,9 @@ async function onSubmit() {
     total: total.value ?? "",
     state: state.value.value,
     description: description.value,
+  });
+  $q.notify({
+    message: "Factura creada",
   });
   emit("refreshTable");
 }

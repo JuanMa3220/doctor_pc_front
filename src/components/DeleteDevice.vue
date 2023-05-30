@@ -9,6 +9,9 @@
 
 <script setup>
 import { api } from "boot/axios";
+import { useQuasar } from "quasar";
+
+const $q = useQuasar();
 
 const props = defineProps({ deviceId: Number });
 
@@ -16,6 +19,9 @@ const emit = defineEmits(["refreshTable"]);
 
 async function onSubmit() {
   await api.post("/device/delete/" + props.deviceId);
+  $q.notify({
+    message: "Dispositivo eliminado",
+  });
   emit("refreshTable");
 }
 </script>

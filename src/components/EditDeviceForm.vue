@@ -54,6 +54,9 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { api } from "boot/axios";
+import { useQuasar } from "quasar";
+
+const $q = useQuasar();
 
 const props = defineProps({ deviceId: Number });
 
@@ -89,12 +92,12 @@ async function onSubmit() {
     state: state.value.value,
     userId: 2,
   });
+  $q.notify("Dispositivo editado");
   emit("refreshTable");
 }
 
 onBeforeMount(async () => {
   let response = await api.get("/device/" + props.deviceId);
-  console.log(response);
   article.value = response.data.article;
   brand.value = response.data.brand;
   serial.value = response.data.serial;

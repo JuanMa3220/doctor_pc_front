@@ -24,14 +24,13 @@
       />
 
       <q-input
+        type="number"
         dense
         v-model="total"
         label="Total"
         hint="Ingrese el total de la factura"
         lazy-rules
-        :rules="[
-          (val) => (val && val.length > 0) || 'Por favor escriba el valor',
-        ]"
+        :rules="[(val) => val || 'Por favor escriba el valor']"
       />
 
       <q-input
@@ -58,12 +57,15 @@
 <script setup>
 import { ref } from "vue";
 import { api } from "boot/axios";
+import { useQuasar } from "quasar";
 
 let checkin = ref(null);
 let checkout = ref(null);
 let total = ref(null);
 let state = ref(0);
 let description = ref(null);
+
+const $q = useQuasar();
 
 const emit = defineEmits(["refreshTable"]);
 
@@ -74,6 +76,9 @@ async function onSubmit() {
     total: total.value ?? "",
     state: state.value,
     description: description.value,
+  });
+  $q.notify({
+    message: "Factura creada",
   });
   emit("refreshTable");
 }

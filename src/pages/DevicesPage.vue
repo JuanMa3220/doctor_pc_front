@@ -22,16 +22,16 @@
             <q-td key="id" :props="props">
               {{ props.row.id }}
             </q-td>
-            <q-td key="article" :props="props">
+            <q-td key="article" :props="props" class="max-width">
               {{ props.row.article }}
             </q-td>
-            <q-td key="brand" :props="props">
+            <q-td key="brand" :props="props" class="max-width">
               {{ props.row.brand }}
             </q-td>
-            <q-td key="serial" :props="props">
+            <q-td key="serial" :props="props" class="max-width">
               {{ props.row.serial }}
             </q-td>
-            <q-td key="diagnostic" :props="props">
+            <q-td key="diagnostic" :props="props" class="max-width">
               {{ props.row.diagnostic }}
             </q-td>
             <q-td key="state" :props="props">
@@ -192,3 +192,11 @@ onBeforeMount(() => {
   refreshTable();
 });
 </script>
+
+<style>
+.max-width {
+  max-width: 7rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+</style>
