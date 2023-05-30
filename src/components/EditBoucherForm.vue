@@ -3,6 +3,7 @@
     <div class="q-mb-md">
       <q-input
         dense
+        type="date"
         v-model="checkin"
         label="Fecha de Ingreso"
         hint="Ingrese la Fecha de entrada"
@@ -14,6 +15,7 @@
 
       <q-input
         dense
+        type="date"
         v-model="checkout"
         label="Fecha de Salida"
         hint="Ingrese la Fecha de salida"
@@ -24,14 +26,13 @@
       />
 
       <q-input
+        type="number"
         dense
         v-model="total"
         label="Total"
         hint="Ingrese el total de la factura"
         lazy-rules
-        :rules="[
-          (val) => (val && val.length > 0) || 'Por favor escriba el valor',
-        ]"
+        :rules="[(val) => (val && val >= 0) || 'Por favor escriba el valor']"
       />
 
       <q-select
