@@ -15,9 +15,8 @@
               hint="Ingrese su documento de identidad"
               lazy-rules
               :rules="[
-                (val) => val || 'Por favor escribe tu documento de identidad',
                 (val) =>
-                  (val && val.length > 9 && val.length < 15) ||
+                  (val.length > 9 && val.length < 15) ||
                   'Debe ser mayor a 10 digitos y menor a 15',
               ]"
             />

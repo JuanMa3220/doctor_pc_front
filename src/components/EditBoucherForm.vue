@@ -104,7 +104,6 @@ async function onSubmit() {
 
 onBeforeMount(async () => {
   let response = await api.get("/boucher/" + props.boucherId);
-  console.log(response);
   checkin.value = response.data.checkin;
   checkout.value = response.data.checkout;
   total.value = response.data.total;
